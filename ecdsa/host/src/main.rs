@@ -84,6 +84,10 @@ fn main() {
 
     // Run signature verified in the zkVM guest and get the resulting receipt.
     let receipt = prove_ecdsa_verification(signing_key.verifying_key(), message, &signature);
+    // let journal_string = String::from_utf8_lossy(&receipt.journal);
+    // println!("Receipt Journal: {}", journal_string);
+    let journal_hex = hex::encode(&receipt.journal);
+    println!("Receipt Journal: {}", journal_hex);
 
     // Verify the receipt and then access the journal.
     receipt.verify(METHOD_NAME_ID).unwrap();
@@ -92,6 +96,12 @@ fn main() {
             .unwrap()
             .try_into()
             .unwrap();
+    
+    let receipt_verifying_key_hex = hex::encode(&receipt_verifying_key);
+    let receipt_message_hex = hex::encode(&receipt_message);
+
+    println!("Receipt receipt_verifying_key: {}", receipt_verifying_key_hex);
+    println!("Receipt receipt_message: {}", receipt_message_hex);
 
     println!(
         "Verified the signature over message {:?} with key {}",
